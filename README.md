@@ -6,6 +6,9 @@
 This is simple library for getting URI or file path of image selected by user.
 Simple one-call interface and two callbacks let you get neccessary objects.
 
+## UI
+![bottomsheet](https://raw.githubusercontent.com/interactiveservices/selimg/master/screenshots/bottomsheet.png)
+
 ## Usage
 Get `Selimg` builder via `getInstance()` method.
 ### Configuration
