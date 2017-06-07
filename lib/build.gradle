@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+def version = '1.0.0'
 
 android {
     compileSdkVersion 25
@@ -8,7 +11,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "$version"
     }
     buildTypes {
         release {
@@ -16,6 +19,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+publish {
+    groupId = 'su.ias.components'
+    artifactId = 'selimg'
+    publishVersion = "$version"
+    repoName = 'maven'
+    desc = 'base classes of adapters for Android development'
+    licences = ['MIT']
+    website = 'https://github.com/interactiveservices/selimg'
 }
 
 dependencies {
