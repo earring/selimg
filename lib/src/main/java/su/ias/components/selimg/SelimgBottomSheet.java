@@ -162,7 +162,6 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            //TODO
             case REQUEST_WRITE_EXTERNAL_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                         grantResults[1] == PackageManager.PERMISSION_GRANTED){
