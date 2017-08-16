@@ -88,10 +88,12 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
     @Override
     public void openImageFromCamera() {
         if (ContextCompat.checkSelfPermission(getContext(),
-                                              Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                              Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getContext(),
+                                                  Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             openImageFromCameraIntent();
         } else {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                REQUEST_WRITE_EXTERNAL_PERMISSION);
         }
     }
@@ -104,6 +106,14 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
             cameraOutputFile = getContext().getContentResolver()
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOutputFile);
+
+            if (Selimg.getInstance().getUseFrontCamera()) {
+                takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING",
+                                           android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
+                takePictureIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
+                takePictureIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+            }
+
             startActivityForResult(takePictureIntent, REQUEST_CAMERA_OPEN);
         }
     }
@@ -152,8 +162,10 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
+            //TODO
             case REQUEST_WRITE_EXTERNAL_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED){
                     openImageFromCameraIntent();
                 } else {
                     Toast.makeText(getContext(),

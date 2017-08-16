@@ -13,7 +13,7 @@ public class Selimg {
     private static Selimg INSTANCE;
 
     private ArrayList<Integer> selectedTypes;
-
+    private boolean useFrontCamera = false;
     private PhotoUriCallback photoUriCallback;
     private PhotoFileCallback photoFileCallback;
 
@@ -45,13 +45,22 @@ public class Selimg {
                 .show(fragmentManager, this.getClass().getName() + ".selectImageBottomSheet");
     }
 
+    public Selimg useFrontCamera(){
+        this.useFrontCamera = true;
+        return this;
+    }
+
+    boolean getUseFrontCamera(){
+        return useFrontCamera;
+    }
+
     @Nullable
     PhotoUriCallback getPhotoUriCallback() {
         return photoUriCallback;
     }
 
     @Nullable
-    public PhotoFileCallback getPhotoFileCallback() {
+    PhotoFileCallback getPhotoFileCallback() {
         return photoFileCallback;
     }
 }

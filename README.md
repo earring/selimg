@@ -15,10 +15,12 @@ Get `Selimg` builder via `getInstance()` method.
 - `type(int)` is for possible types of selected image
 - `uri()` is for setting callback when you want an URI of selected image
 - `file()` is for setting callback when you want a file of selected image
+- `useFrontCamera()` is front camera start as main
 ### Warning
 In order to using camera provider (type ImageProvider.TYPE_FROM_CAMERA) you must specify permission in your AndroidManifest.xml.
 ```java
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.CAMERA" />
 ```
 ### Example
 ```java
@@ -50,6 +52,6 @@ public class MainActivity extends AppCompatActivity implements PhotoFileCallback
 ```groovy
 dependencies {
     ...
-    compile 'su.ias.components:selimg:1.0.0'
+    compile "su.ias.components:selimg:$lastVersion"
 }
 ```
