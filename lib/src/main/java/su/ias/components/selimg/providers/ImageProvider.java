@@ -8,6 +8,7 @@ public abstract class ImageProvider {
 
     public static final int TYPE_FROM_GALLERY = 0;
     public static final int TYPE_FROM_CAMERA = 1;
+    public static final int TYPE_CANCEL = 2;
 
     protected ImageSelector imageSelector;
 
@@ -32,6 +33,8 @@ public abstract class ImageProvider {
                 return new GalleryImageProvider(imageSelector);
             case TYPE_FROM_CAMERA:
                 return new CameraImageProvider(imageSelector);
+            case TYPE_CANCEL:
+                return new CancelProvider(imageSelector);
         }
         return null;
     }

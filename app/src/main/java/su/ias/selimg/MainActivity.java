@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements PhotoUriCallback,
         Selimg.getInstance()
                 .type(ImageProvider.TYPE_FROM_CAMERA)
                 .type(ImageProvider.TYPE_FROM_GALLERY)
+                .type(ImageProvider.TYPE_CANCEL)
                 .uri(this)
                 .file(this)
                 .showWith(getSupportFragmentManager());

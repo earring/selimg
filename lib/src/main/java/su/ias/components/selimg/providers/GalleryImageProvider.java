@@ -15,12 +15,12 @@ class GalleryImageProvider extends ImageProvider {
 
     @Override
     public int getTitle() {
-        return R.string.select_from_gallery;
+        return R.string.selimg_select_from_gallery;
     }
 
     @Override
     public int getImg() {
-        return R.drawable.ic_upload_icon;
+        return R.drawable.ic_image_multiple;
     }
 
     @Override

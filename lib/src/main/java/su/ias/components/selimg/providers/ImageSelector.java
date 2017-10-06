@@ -4,4 +4,6 @@ public interface ImageSelector {
     void openImageFromGallery();
 
     void openImageFromCamera();
+
+    void cancel();
 }

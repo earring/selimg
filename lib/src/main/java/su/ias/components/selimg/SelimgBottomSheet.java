@@ -80,7 +80,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent,
-                                                    getString(R.string.chooser_select_picture)),
+                                                    getString(R.string.selimg_chooser_select_picture)),
                                REQUEST_GALLERY_OPEN);
     }
 
@@ -96,6 +96,11 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                REQUEST_WRITE_EXTERNAL_PERMISSION);
         }
+    }
+
+    @Override
+    public void cancel() {
+        dismiss();
     }
 
     private void openImageFromCameraIntent() {
@@ -168,7 +173,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                     openImageFromCameraIntent();
                 } else {
                     Toast.makeText(getContext(),
-                                   R.string.permission_rationale_write_external_storage,
+                                   R.string.selimg_permission_rationale_write_external_storage,
                                    Toast.LENGTH_SHORT).show();
                 }
                 break;

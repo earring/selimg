@@ -14,7 +14,7 @@
         android:layout_gravity="center_vertical"
         android:layout_margin="12dp"
         android:scaleType="centerInside"
-        tools:src="@drawable/ic_camera_icon" />
+        tools:src="@drawable/ic_camera" />
 
     <TextView
         android:id="@+id/txt_item"

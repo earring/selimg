@@ -1,6 +1,7 @@
 <resources>
-    <string name="select_from_gallery">Select from gallery</string>
-    <string name="select_from_camera">Select from camera</string>
-    <string name="chooser_select_picture">Select gallery app</string>
-    <string name="permission_rationale_write_external_storage">You didn\'t give permission to access to storage</string>
+    <string name="selimg_select_from_gallery">Select from gallery</string>
+    <string name="selimg_select_from_camera">Select from camera</string>
+    <string name="selimg_chooser_select_picture">Select gallery app</string>
+    <string name="selimg_permission_rationale_write_external_storage">You didn\'t give permission to access to storage</string>
+    <string name="selimg_cancel">Cancel</string>
 </resources>
