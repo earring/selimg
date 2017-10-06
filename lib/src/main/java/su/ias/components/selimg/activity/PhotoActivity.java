@@ -1,7 +1,7 @@
 package su.ias.components.selimg.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.view.CameraView;
 import su.ias.components.selimg.R;
 
-public class PhotoActivity extends Activity {
+public class PhotoActivity extends AppCompatActivity {
 
     public static final String EXTRA_IMAGE_FILE = "extraImageFile";
     public static final String EXTRA_USE_FRONT_CAMERA = "useFrontCamera";
