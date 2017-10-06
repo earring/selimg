@@ -1,1 +1,10 @@
-<manifest package="su.ias.components.selimg"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="su.ias.components.selimg">
+
+    <application>
+        <activity
+            android:name=".activity.PhotoActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

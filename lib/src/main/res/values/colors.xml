@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="selimg_black">#000000</color>
+    <color name="selimg_white">#FFFFFF</color>
     <color name="selimg_red">#990000</color>
 </resources>

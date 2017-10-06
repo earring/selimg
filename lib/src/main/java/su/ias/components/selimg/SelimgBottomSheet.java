@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -20,12 +20,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import su.ias.components.selimg.activity.PhotoActivity;
 import su.ias.components.selimg.callbacks.PhotoFileCallback;
 import su.ias.components.selimg.callbacks.PhotoUriCallback;
 import su.ias.components.selimg.providers.ImageProvider;
@@ -40,7 +42,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
     private static final int REQUEST_WRITE_EXTERNAL_PERMISSION = 1000;
 
     private List<Integer> typeList;
-    private Uri cameraOutputFile;
+    private File cameraOutputFile;
 
     public static SelimgBottomSheet newInstance(ArrayList<Integer> types) {
         Bundle args = new Bundle();
@@ -50,10 +52,15 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         return fragment;
     }
 
-    public static String generateImageFilename() {
+    private File createImageFile() throws IOException {
+        // Create an image file name
         String timeStamp =
-                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
-        return timeStamp + ".jpg";
+                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(imageFileName,  /* prefix */
+                                   ".jpg",         /* suffix */
+                                   storageDir      /* directory */);
     }
 
     @Override
@@ -103,40 +110,34 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
     }
 
     private void openImageFromCameraIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent takePictureIntent = new Intent(getContext(), PhotoActivity.class);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, generateImageFilename());
-            cameraOutputFile = getContext().getContentResolver()
-                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraOutputFile);
-
-            if (Selimg.getInstance().getUseFrontCamera()) {
-                takePictureIntent.putExtra("android.intent.extras.CAMERA_FACING",
-                                           android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT);
-                takePictureIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-                takePictureIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
+            try {
+                cameraOutputFile = createImageFile();
+                takePictureIntent.putExtra(PhotoActivity.EXTRA_IMAGE_FILE, cameraOutputFile);
+                takePictureIntent.putExtra(PhotoActivity.EXTRA_USE_FRONT_CAMERA, Selimg.getInstance().getUseFrontCamera());
+                startActivityForResult(takePictureIntent, REQUEST_CAMERA_OPEN);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            startActivityForResult(takePictureIntent, REQUEST_CAMERA_OPEN);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Uri uri = null;
+        File file = null;
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_GALLERY_OPEN) {
                 uri = intent.getData();
+                String fileName = FileUtils.getImageFileName(getContext(), uri);
+                if (!TextUtils.isEmpty(fileName)) {
+                    file = new File(fileName);
+                }
             } else if (requestCode == REQUEST_CAMERA_OPEN) {
-                uri = cameraOutputFile;
+                file = cameraOutputFile;
+                uri = Uri.fromFile(file);
             }
-        }
-
-        File file = null;
-        String fileName = FileUtils.getImageFileName(getContext(), uri);
-        if (!TextUtils.isEmpty(fileName)) {
-            file = new File(fileName);
         }
 
         PhotoUriCallback uriCallback = Selimg.getInstance().getPhotoUriCallback();
