@@ -27,4 +27,9 @@ class GalleryImageProvider extends ImageProvider {
     public void selectImage() {
         imageSelector.openImageFromGallery();
     }
+
+    @Override
+    public int getColor() {
+        return R.color.selimg_black;
+    }
 }

@@ -27,4 +27,9 @@ class CameraImageProvider extends ImageProvider {
     public void selectImage() {
         imageSelector.openImageFromCamera();
     }
+
+    @Override
+    public int getColor() {
+        return R.color.selimg_black;
+    }
 }

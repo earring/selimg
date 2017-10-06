@@ -27,4 +27,9 @@ class CancelProvider extends ImageProvider {
     public void selectImage() {
         imageSelector.cancel();
     }
+
+    @Override
+    public int getColor() {
+        return R.color.selimg_red;
+    }
 }

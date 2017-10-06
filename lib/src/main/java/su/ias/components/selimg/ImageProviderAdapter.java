@@ -1,7 +1,9 @@
 package su.ias.components.selimg;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +39,13 @@ class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderA
                 item.selectImage();
             }
         });
-        Drawable icon = ContextCompat.getDrawable(viewHolder.imgItem.getContext(), item.getImg());
+        Context context = viewHolder.imgItem.getContext();
+        Drawable icon = ContextCompat.getDrawable(context, item.getImg());
+        int color = ContextCompat.getColor(context, item.getColor());
+        DrawableCompat.setTint(icon, color);
         viewHolder.imgItem.setImageDrawable(icon);
         viewHolder.txtItem.setText(item.getTitle());
+        viewHolder.txtItem.setTextColor(color);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

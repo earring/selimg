@@ -1,5 +1,6 @@
 package su.ias.components.selimg.providers;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -25,6 +26,9 @@ public abstract class ImageProvider {
     abstract public int getImg();
 
     abstract public void selectImage();
+
+    @ColorRes
+    abstract public int getColor();
 
     @Nullable
     public static ImageProvider createImageProvider(ImageSelector imageSelector, int type) {
