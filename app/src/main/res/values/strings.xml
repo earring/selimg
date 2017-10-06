@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">selimg</string>
+    <string name="app_name">Selimg example</string>
     <string name="label_select_an_image">Select an image</string>
 </resources>

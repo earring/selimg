@@ -26,7 +26,7 @@ publish {
     artifactId = 'selimg'
     publishVersion = "$version"
     repoName = 'maven'
-    desc = 'base classes of adapters for Android development'
+    desc = 'One-call getting URI or file path of image selected by user'
     licences = ['MIT']
     website = 'https://github.com/interactiveservices/selimg'
 }
