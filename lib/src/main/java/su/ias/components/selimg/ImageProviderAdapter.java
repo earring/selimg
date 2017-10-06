@@ -49,6 +49,7 @@ class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderA
 
         if (showIcons) {
             Drawable icon = ContextCompat.getDrawable(context, item.getImg());
+            icon = DrawableCompat.wrap(icon);
             DrawableCompat.setTint(icon, color);
             viewHolder.imgItem.setVisibility(View.VISIBLE);
             viewHolder.imgItem.setImageDrawable(icon);
