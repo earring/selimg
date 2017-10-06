@@ -18,8 +18,13 @@ import su.ias.components.selimg.providers.ImageProvider;
 
 class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderAdapter.ViewHolder> {
 
-    public ImageProviderAdapter(List<ImageProvider> list, OnItemClickListener listener) {
+    private final boolean showIcons;
+
+    public ImageProviderAdapter(List<ImageProvider> list,
+                                OnItemClickListener listener,
+                                boolean showIcons) {
         super(list, listener);
+        this.showIcons = showIcons;
     }
 
     @Override
@@ -40,10 +45,16 @@ class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderA
             }
         });
         Context context = viewHolder.imgItem.getContext();
-        Drawable icon = ContextCompat.getDrawable(context, item.getImg());
         int color = ContextCompat.getColor(context, item.getColor());
-        DrawableCompat.setTint(icon, color);
-        viewHolder.imgItem.setImageDrawable(icon);
+
+        if (showIcons) {
+            Drawable icon = ContextCompat.getDrawable(context, item.getImg());
+            DrawableCompat.setTint(icon, color);
+            viewHolder.imgItem.setVisibility(View.VISIBLE);
+            viewHolder.imgItem.setImageDrawable(icon);
+        } else {
+            viewHolder.imgItem.setVisibility(View.GONE);
+        }
         viewHolder.txtItem.setText(item.getTitle());
         viewHolder.txtItem.setTextColor(color);
     }

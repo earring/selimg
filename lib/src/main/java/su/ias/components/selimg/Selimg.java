@@ -16,6 +16,7 @@ public class Selimg {
     private boolean useFrontCamera = false;
     private PhotoUriCallback photoUriCallback;
     private PhotoFileCallback photoFileCallback;
+    private boolean showIcons = true;
 
     public static Selimg getInstance() {
         if (INSTANCE == null) {
@@ -45,13 +46,22 @@ public class Selimg {
                 .show(fragmentManager, this.getClass().getName() + ".selectImageBottomSheet");
     }
 
-    public Selimg useFrontCamera(){
+    public Selimg useFrontCamera() {
         this.useFrontCamera = true;
         return this;
     }
 
-    boolean getUseFrontCamera(){
+    public Selimg showIcons(boolean showIcons) {
+        this.showIcons = showIcons;
+        return this;
+    }
+
+    boolean getUseFrontCamera() {
         return useFrontCamera;
+    }
+
+    public boolean getShowIcons() {
+        return showIcons;
     }
 
     @Nullable

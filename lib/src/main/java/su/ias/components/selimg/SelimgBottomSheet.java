@@ -58,7 +58,6 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
         View view = View.inflate(getContext(), R.layout.bottom_sheet_selector, null);
         dialog.setContentView(view);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rcview_selector);
@@ -70,7 +69,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                                                                         type));
             }
         }
-        recyclerView.setAdapter(new ImageProviderAdapter(imageProviderList, null));
+        recyclerView.setAdapter(new ImageProviderAdapter(imageProviderList, null, Selimg.getInstance().getShowIcons()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

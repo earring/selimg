@@ -12,7 +12,10 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center_vertical"
-        android:layout_margin="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp"
         android:scaleType="centerInside"
         tools:src="@drawable/ic_camera" />
 
@@ -20,9 +23,9 @@
         android:id="@+id/txt_item"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
         android:layout_weight="1"
         android:gravity="left|center_vertical"
-        android:paddingLeft="8dp"
         android:textSize="16sp"
         tools:text="Select from gallery" />
 
