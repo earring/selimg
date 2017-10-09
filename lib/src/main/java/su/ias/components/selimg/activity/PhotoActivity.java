@@ -1,6 +1,7 @@
 package su.ias.components.selimg.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -19,11 +20,11 @@ public class PhotoActivity extends AppCompatActivity {
     public static final String EXTRA_IMAGE_FILE = "extraImageFile";
     public static final String EXTRA_USE_FRONT_CAMERA = "useFrontCamera";
 
-    CameraView cameraView;
-
     private Fotoapparat fotoapparat;
     private File file;
     private boolean useFrontCamera;
+    private CameraView cameraView;
+    private FloatingActionButton btnShot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class PhotoActivity extends AppCompatActivity {
         useFrontCamera = getIntent().getBooleanExtra(EXTRA_USE_FRONT_CAMERA, false);
 
         cameraView = (CameraView) findViewById(R.id.camera_view);
+        btnShot = (FloatingActionButton) findViewById(R.id.btn_shot);
 
         FotoapparatBuilder builder = Fotoapparat.with(this);
         if (useFrontCamera) {
@@ -42,7 +44,7 @@ public class PhotoActivity extends AppCompatActivity {
         }
         fotoapparat = builder.into(cameraView).build();
 
-        cameraView.setOnClickListener(new View.OnClickListener() {
+        btnShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PhotoResult photoResult = fotoapparat.takePicture();
