@@ -4,12 +4,12 @@ apply plugin: 'com.novoda.bintray-release'
 def version = '1.1.2'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 6
         versionName "$version"
     }
@@ -32,9 +32,10 @@ publish {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'su.ias.components:adapters-android:1.0.2'
-    compile 'su.ias.components:utils-android:1.0.13'
-    compile 'io.fotoapparat.fotoapparat:library:1.4.1'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:exifinterface:26.1.0'
+    implementation 'su.ias.components:adapters-android:1.0.4'
+    implementation 'su.ias.components:utils-android:1.0.16'
+    implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
 }
