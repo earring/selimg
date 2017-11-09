@@ -14,6 +14,7 @@ public class Selimg {
 
     private ArrayList<Integer> selectedTypes;
     private boolean useFrontCamera = false;
+
     private PhotoUriCallback photoUriCallback;
     private PhotoFileCallback photoFileCallback;
     private boolean showIcons = true;
@@ -28,16 +29,6 @@ public class Selimg {
 
     public Selimg type(Integer type) {
         selectedTypes.add(type);
-        return this;
-    }
-
-    public Selimg uri(PhotoUriCallback photoUriCallback) {
-        this.photoUriCallback = photoUriCallback;
-        return this;
-    }
-
-    public Selimg file(PhotoFileCallback photoFileCallback) {
-        this.photoFileCallback = photoFileCallback;
         return this;
     }
 
@@ -69,8 +60,16 @@ public class Selimg {
         return photoUriCallback;
     }
 
+    public void setPhotoUriCallback(PhotoUriCallback photoUriCallback) {
+        this.photoUriCallback = photoUriCallback;
+    }
+
     @Nullable
     PhotoFileCallback getPhotoFileCallback() {
         return photoFileCallback;
+    }
+
+    public void setPhotoFileCallback(PhotoFileCallback photoFileCallback) {
+        this.photoFileCallback = photoFileCallback;
     }
 }

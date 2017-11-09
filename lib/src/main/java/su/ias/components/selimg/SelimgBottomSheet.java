@@ -3,6 +3,7 @@ package su.ias.components.selimg;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,12 +12,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,8 +43,10 @@ import su.ias.utils.BitmapUtils;
 public final class SelimgBottomSheet extends BottomSheetDialogFragment implements ImageSelector {
 
     private static final String TYPE_ARRAY = "typeArray";
+    private static final String FILE_STATE = "fileState";
     private static final int REQUEST_GALLERY_OPEN = 1;
     private static final int REQUEST_CAMERA_OPEN = 2;
+    private static final int IMAGE_QUALITY = 70;
     private static final int REQUEST_WRITE_EXTERNAL_PERMISSION = 1000;
 
     private List<Integer> typeList;
@@ -52,6 +58,31 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         args.putIntegerArrayList(TYPE_ARRAY, types);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+
+                FrameLayout bottomSheet =
+                        d.findViewById(android.support.design.R.id.design_bottom_sheet);
+                if (bottomSheet != null) {
+                    BottomSheetBehavior.from(bottomSheet)
+                            .setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
+
+        if (savedInstanceState != null && savedInstanceState.getSerializable(FILE_STATE) != null) {
+            cameraOutputFile = (File) savedInstanceState.getSerializable(FILE_STATE);
+        }
+
+        return dialog;
     }
 
     private File createImageFile() throws IOException {
@@ -69,7 +100,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
     public void setupDialog(Dialog dialog, int style) {
         View view = View.inflate(getContext(), R.layout.bottom_sheet_selector, null);
         dialog.setContentView(view);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rcview_selector);
+        RecyclerView recyclerView = view.findViewById(R.id.rcview_selector);
         List<ImageProvider> imageProviderList = new ArrayList<>();
         typeList = getArguments().getIntegerArrayList(TYPE_ARRAY);
         if (typeList != null) {
@@ -145,13 +176,13 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                     // rotate image if necessary
                     Bitmap bitmap = BitmapUtils.rotateImage(cameraOutputFile.getAbsolutePath());
                     FileOutputStream fileOutputStream = new FileOutputStream(cameraOutputFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 70, fileOutputStream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, fileOutputStream);
                     fileOutputStream.close();
-                } catch (IOException e) {
+                    file = cameraOutputFile;
+                    uri = Uri.fromFile(file);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                file = cameraOutputFile;
-                uri = Uri.fromFile(file);
             }
         }
 
@@ -191,6 +222,14 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                                    Toast.LENGTH_SHORT).show();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (outState != null) {
+            outState.putSerializable(FILE_STATE, cameraOutputFile);
         }
     }
 }

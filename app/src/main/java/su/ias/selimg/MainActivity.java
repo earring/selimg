@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements PhotoUriCallback,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Selimg.getInstance().setPhotoFileCallback(this);
+        Selimg.getInstance().setPhotoUriCallback(this);
     }
 
     @OnClick(R.id.btn_select_image)
@@ -50,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements PhotoUriCallback,
                 .type(ImageProvider.TYPE_FROM_GALLERY)
                 .type(ImageProvider.TYPE_CANCEL)
                 .showIcons(true)
-                .uri(this)
-                .file(this)
                 .showWith(getSupportFragmentManager());
     }
 
@@ -77,5 +77,12 @@ public class MainActivity extends AppCompatActivity implements PhotoUriCallback,
     public void onFileNotSelected() {
         imgFile.setImageDrawable(null);
         txtFile.setText("File");
+    }
+
+    @Override
+    protected void onDestroy() {
+        Selimg.getInstance().setPhotoFileCallback(null);
+        Selimg.getInstance().setPhotoUriCallback(null);
+        super.onDestroy();
     }
 }
