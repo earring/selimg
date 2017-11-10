@@ -11,11 +11,12 @@ Simple one-call interface and two callbacks let you get neccessary objects.
 
 ## Usage
 Get `Selimg` builder via `getInstance()` method.
-### Configuration
+### Builder configuration
 - `type(int)` is for possible types of selected image
-- `uri()` is for setting callback when you want an URI of selected image
-- `file()` is for setting callback when you want a file of selected image
 - `useFrontCamera()` is front camera start as main
+- `showIcons()` show icons in list of options or not?
+- `setPhotoUriCallback()` is for setting callback when you want an URI of selected image
+- `setPhotoFileCallback()` is for setting callback when you want a file of selected image
 ### Warning
 In order to using camera provider (type ImageProvider.TYPE_FROM_CAMERA) you must specify permission in your AndroidManifest.xml.
 ```java
@@ -27,6 +28,13 @@ In order to using camera provider (type ImageProvider.TYPE_FROM_CAMERA) you must
 public class MainActivity extends AppCompatActivity implements PhotoFileCallback {
 
     ...
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Selimg.getInstance().setPhotoFileCallback(this);
+        Selimg.getInstance().setPhotoUriCallback(this);
+    }
 
     private void requestImage() {
         // call image selector
@@ -46,12 +54,20 @@ public class MainActivity extends AppCompatActivity implements PhotoFileCallback
     public void onFileNotSelected() {
         // when user didn't select file
     }
+    
+    @Override
+    protected void onDestroy() {
+        Selimg.getInstance().setPhotoFileCallback(null);
+        Selimg.getInstance().setPhotoUriCallback(null);
+        super.onDestroy();
+    }
 }
 ```
 ### Adding library to your project
 ```groovy
 dependencies {
     ...
-    compile "su.ias.components:selimg:$lastVersion"
+    implementation 'su.ias.components:selimg:1.2.1'
+    implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
 }
 ```
