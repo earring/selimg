@@ -159,13 +159,6 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                 }
             } else if (requestCode == REQUEST_CAMERA_OPEN) {
                 try {
-                    // rotate image if necessary
-                    Bitmap bitmap = BitmapUtils.rotateImage(cameraOutputFile.getAbsolutePath());
-                    FileOutputStream fileOutputStream = new FileOutputStream(cameraOutputFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,
-                                    Selimg.IMAGE_QUALITY,
-                                    fileOutputStream);
-                    fileOutputStream.close();
                     file = cameraOutputFile;
                     uri = Uri.fromFile(file);
                 } catch (Exception e) {

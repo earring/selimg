@@ -1,11 +1,15 @@
 package su.ias.components.selimg.activity;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.FotoapparatBuilder;
@@ -16,6 +20,8 @@ import io.fotoapparat.result.PendingResult;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.view.CameraView;
 import su.ias.components.selimg.R;
+import su.ias.components.selimg.Selimg;
+import su.ias.utils.BitmapUtils;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -27,6 +33,8 @@ public class PhotoActivity extends AppCompatActivity {
     private boolean useFrontCamera;
     private CameraView cameraView;
     private FloatingActionButton btnShot;
+    private ProgressBar progress;
+    private BitmapRotationAsyncTask bitmapRotationAsyncTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class PhotoActivity extends AppCompatActivity {
 
         cameraView = findViewById(R.id.camera_view);
         btnShot = findViewById(R.id.btn_shot);
+        progress = findViewById(R.id.progress);
 
         FotoapparatBuilder builder = Fotoapparat.with(this);
 
@@ -55,20 +64,29 @@ public class PhotoActivity extends AppCompatActivity {
 
         fotoapparat = builder.into(cameraView).build();
 
+        if (!fotoapparat.isAvailable()) {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+
         btnShot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnShot.setVisibility(View.GONE);
+                progress.setVisibility(View.VISIBLE);
                 PhotoResult photoResult = fotoapparat.takePicture();
                 try {
                     photoResult.saveToFile(file).whenAvailable(new PendingResult.Callback<Void>() {
                         @Override
                         public void onResult(Void aVoid) {
-                            setResult(RESULT_OK);
-                            finish();
+                            bitmapRotationAsyncTask = new BitmapRotationAsyncTask(file);
+                            bitmapRotationAsyncTask.execute();
                         }
                     });
                 } catch (RuntimeException e) {
+                    progress.setVisibility(View.GONE);
                     setResult(RESULT_CANCELED);
+                    finish();
                 }
             }
         });
@@ -85,4 +103,45 @@ public class PhotoActivity extends AppCompatActivity {
         super.onStop();
         fotoapparat.stop();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bitmapRotationAsyncTask != null) {
+            bitmapRotationAsyncTask.cancel(true);
+        }
+    }
+
+    private class BitmapRotationAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private File bitmapFile;
+
+        public BitmapRotationAsyncTask(File bitmapFile) {
+            this.bitmapFile = bitmapFile;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                // rotate image if necessary
+                Bitmap bitmap = BitmapUtils.rotateImage(bitmapFile.getAbsolutePath());
+                FileOutputStream fileOutputStream = new FileOutputStream(bitmapFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, Selimg.IMAGE_QUALITY, fileOutputStream);
+                fileOutputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (!isCancelled()) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
+    }
+
 }
