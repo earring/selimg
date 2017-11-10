@@ -10,6 +10,8 @@ import su.ias.components.selimg.callbacks.PhotoUriCallback;
 
 public class Selimg {
 
+    public static final int IMAGE_QUALITY = 70;
+
     private static Selimg INSTANCE;
 
     private ArrayList<Integer> selectedTypes;

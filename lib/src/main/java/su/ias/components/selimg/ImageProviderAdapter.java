@@ -16,6 +16,9 @@ import su.ias.components.adapters.BaseListAdapter;
 import su.ias.components.adapters.OnItemClickListener;
 import su.ias.components.selimg.providers.ImageProvider;
 
+/**
+ * Adapter for image providers (from camera, from file, etc...)
+ */
 class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderAdapter.ViewHolder> {
 
     private final boolean showIcons;
@@ -35,29 +38,29 @@ class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderA
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
         final ImageProvider item = getItem(position);
 
-        viewHolder.layoutItem.setOnClickListener(new View.OnClickListener() {
+        holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 item.selectImage();
             }
         });
-        Context context = viewHolder.imgItem.getContext();
+        Context context = holder.imgItem.getContext();
         int color = ContextCompat.getColor(context, item.getColor());
 
         if (showIcons) {
             Drawable icon = ContextCompat.getDrawable(context, item.getImg());
             icon = DrawableCompat.wrap(icon);
             DrawableCompat.setTint(icon, color);
-            viewHolder.imgItem.setVisibility(View.VISIBLE);
-            viewHolder.imgItem.setImageDrawable(icon);
+            holder.imgItem.setVisibility(View.VISIBLE);
+            holder.imgItem.setImageDrawable(icon);
         } else {
-            viewHolder.imgItem.setVisibility(View.GONE);
+            holder.imgItem.setVisibility(View.GONE);
         }
-        viewHolder.txtItem.setText(item.getTitle());
-        viewHolder.txtItem.setTextColor(color);
+
+        holder.txtItem.setText(item.getTitle());
+        holder.txtItem.setTextColor(color);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -70,9 +73,9 @@ class ImageProviderAdapter extends BaseListAdapter<ImageProvider, ImageProviderA
 
         public ViewHolder(View itemView) {
             super(itemView);
-            layoutItem = (ViewGroup) itemView.findViewById(R.id.layout_item);
-            imgItem = (ImageView) itemView.findViewById(R.id.img_item);
-            txtItem = (TextView) itemView.findViewById(R.id.txt_item);
+            layoutItem = itemView.findViewById(R.id.layout_item);
+            imgItem = itemView.findViewById(R.id.img_item);
+            txtItem = itemView.findViewById(R.id.txt_item);
         }
     }
 }

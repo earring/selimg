@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresPermission;
 import android.support.design.widget.BottomSheetBehavior;
@@ -26,11 +25,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import su.ias.components.selimg.activity.PhotoActivity;
 import su.ias.components.selimg.callbacks.PhotoFileCallback;
@@ -46,7 +42,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
     private static final String FILE_STATE = "fileState";
     private static final int REQUEST_GALLERY_OPEN = 1;
     private static final int REQUEST_CAMERA_OPEN = 2;
-    private static final int IMAGE_QUALITY = 70;
+
     private static final int REQUEST_WRITE_EXTERNAL_PERMISSION = 1000;
 
     private List<Integer> typeList;
@@ -67,6 +63,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+                // set bottom sheet to be expanded every time
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
 
                 FrameLayout bottomSheet =
@@ -83,17 +80,6 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         }
 
         return dialog;
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp =
-                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName,  /* prefix */
-                                   ".jpg",         /* suffix */
-                                   storageDir      /* directory */);
     }
 
     @Override
@@ -149,7 +135,7 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
         Intent takePictureIntent = new Intent(getContext(), PhotoActivity.class);
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
             try {
-                cameraOutputFile = createImageFile();
+                cameraOutputFile = FileUtils.createImageFile(getContext());
                 takePictureIntent.putExtra(PhotoActivity.EXTRA_IMAGE_FILE, cameraOutputFile);
                 takePictureIntent.putExtra(PhotoActivity.EXTRA_USE_FRONT_CAMERA,
                                            Selimg.getInstance().getUseFrontCamera());
@@ -176,7 +162,9 @@ public final class SelimgBottomSheet extends BottomSheetDialogFragment implement
                     // rotate image if necessary
                     Bitmap bitmap = BitmapUtils.rotateImage(cameraOutputFile.getAbsolutePath());
                     FileOutputStream fileOutputStream = new FileOutputStream(cameraOutputFile);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, fileOutputStream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,
+                                    Selimg.IMAGE_QUALITY,
+                                    fileOutputStream);
                     fileOutputStream.close();
                     file = cameraOutputFile;
                     uri = Uri.fromFile(file);
