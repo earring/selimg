@@ -9,7 +9,9 @@ import java.io.File;
 
 import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.FotoapparatBuilder;
+import io.fotoapparat.parameter.selector.FocusModeSelectors;
 import io.fotoapparat.parameter.selector.LensPositionSelectors;
+import io.fotoapparat.parameter.selector.Selectors;
 import io.fotoapparat.result.PendingResult;
 import io.fotoapparat.result.PhotoResult;
 import io.fotoapparat.view.CameraView;
@@ -33,15 +35,24 @@ public class PhotoActivity extends AppCompatActivity {
         file = (File) getIntent().getSerializableExtra(EXTRA_IMAGE_FILE);
         useFrontCamera = getIntent().getBooleanExtra(EXTRA_USE_FRONT_CAMERA, false);
 
-        cameraView = (CameraView) findViewById(R.id.camera_view);
-        btnShot = (FloatingActionButton) findViewById(R.id.btn_shot);
+        cameraView = findViewById(R.id.camera_view);
+        btnShot = findViewById(R.id.btn_shot);
 
         FotoapparatBuilder builder = Fotoapparat.with(this);
+
+        // setup the type of camera
         if (useFrontCamera) {
             builder.lensPosition(LensPositionSelectors.front());
         } else {
             builder.lensPosition(LensPositionSelectors.back());
         }
+
+        // setup the type of focus
+        // we use the first focus mode which is supported by device
+        builder.focusMode(Selectors.firstAvailable(FocusModeSelectors.continuousFocus(),
+                                                   FocusModeSelectors.autoFocus(),
+                                                   FocusModeSelectors.fixed()));
+
         fotoapparat = builder.into(cameraView).build();
 
         btnShot.setOnClickListener(new View.OnClickListener() {
