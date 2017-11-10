@@ -1,17 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
-def version = '1.1.2'
-
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 26
-        versionCode 6
-        versionName "$version"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
     buildTypes {
         release {
@@ -24,7 +22,7 @@ android {
 publish {
     groupId = 'su.ias.components'
     artifactId = 'selimg'
-    publishVersion = "$version"
+    publishVersion = "${rootProject.ext.versionName}"
     repoName = 'maven'
     desc = 'One-call getting URI or file path of image selected by user'
     licences = ['MIT']
@@ -32,10 +30,10 @@ publish {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:exifinterface:26.1.0'
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
+    implementation "com.android.support:exifinterface:${rootProject.ext.supportLibraryVersion}"
     implementation 'su.ias.components:adapters-android:1.0.4'
-    implementation 'su.ias.components:utils-android:1.0.16'
+    implementation 'su.ias.components:utils-android:1.0.17'
     implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
 }
