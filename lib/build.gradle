@@ -30,10 +30,10 @@ publish {
 }
 
 dependencies {
-    api "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
-    api "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
-    api "com.android.support:exifinterface:${rootProject.ext.supportLibraryVersion}"
-    api 'su.ias.components:adapters-android:1.0.4'
-    api 'su.ias.components:utils-android:1.0.17'
-    api 'io.fotoapparat.fotoapparat:library:1.4.1'
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"
+    implementation "com.android.support:design:${rootProject.ext.supportLibraryVersion}"
+    implementation "com.android.support:exifinterface:${rootProject.ext.supportLibraryVersion}"
+    implementation 'su.ias.components:adapters-android:1.0.4'
+    implementation 'su.ias.components:utils-android:1.0.17'
+    implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
 }
