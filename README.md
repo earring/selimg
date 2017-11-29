@@ -15,14 +15,11 @@ Get `Selimg` builder via `getInstance()` method.
 - `type(int)` is for possible types of selected image
 - `useFrontCamera()` is front camera start as main
 - `showIcons()` show icons in list of options or not?
+- `rotateImage()` rotate image on Samsung-like devices or not?
 - `setPhotoUriCallback()` is for setting callback when you want an URI of selected image
 - `setPhotoFileCallback()` is for setting callback when you want a file of selected image
 ### Warning
-In order to using camera provider (type ImageProvider.TYPE_FROM_CAMERA) you must specify permission in your AndroidManifest.xml.
-```java
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.CAMERA" />
-```
+In order to using library you must specify additional components in build.gradle dependencies.
 ### Example
 ```java
 public class MainActivity extends AppCompatActivity implements PhotoFileCallback {
@@ -64,10 +61,21 @@ public class MainActivity extends AppCompatActivity implements PhotoFileCallback
 }
 ```
 ### Adding library to your project
+in root build.gradle
+```groovy
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+```
+in app build.gradle
 ```groovy
 dependencies {
     ...
-    implementation 'su.ias.components:selimg:1.2.1'
+    
+    implementation 'su.ias.components:adapters-android:1.0.4'
+    implementation 'su.ias.components:utils-android:1.0.17'
+    implementation 'su.ias.components:selimg:1.2.2'
     implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
 }
 ```
