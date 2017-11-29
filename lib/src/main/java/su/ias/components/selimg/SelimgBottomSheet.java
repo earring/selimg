@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ import su.ias.components.selimg.callbacks.PhotoUriCallback;
 import su.ias.components.selimg.providers.ImageProvider;
 import su.ias.components.selimg.providers.ImageSelector;
 import su.ias.components.selimg.utils.FileUtils;
-import su.ias.utils.BitmapUtils;
 
 public final class SelimgBottomSheet extends BottomSheetDialogFragment implements ImageSelector {
 

@@ -16,6 +16,7 @@ public class Selimg {
 
     private ArrayList<Integer> selectedTypes;
     private boolean useFrontCamera = false;
+    private boolean rotateImage = false;
 
     private PhotoUriCallback photoUriCallback;
     private PhotoFileCallback photoFileCallback;
@@ -73,5 +74,18 @@ public class Selimg {
 
     public void setPhotoFileCallback(PhotoFileCallback photoFileCallback) {
         this.photoFileCallback = photoFileCallback;
+    }
+
+    public boolean isRotateImage() {
+        return rotateImage;
+    }
+
+    /**
+     * Set rotation of photo on Samsung-like devices
+     * @param rotateImage rotate image or not (boolean)
+     */
+    public Selimg rotateImage(boolean rotateImage) {
+        this.rotateImage = rotateImage;
+        return this;
     }
 }

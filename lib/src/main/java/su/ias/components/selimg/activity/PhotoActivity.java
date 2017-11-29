@@ -124,10 +124,14 @@ public class PhotoActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             try {
                 // rotate image if necessary
-                Bitmap bitmap = BitmapUtils.rotateImage(bitmapFile.getAbsolutePath());
-                FileOutputStream fileOutputStream = new FileOutputStream(bitmapFile);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, Selimg.IMAGE_QUALITY, fileOutputStream);
-                fileOutputStream.close();
+                if (Selimg.getInstance().isRotateImage()) {
+                    Bitmap bitmap = BitmapUtils.rotateImage(bitmapFile.getAbsolutePath());
+                    FileOutputStream fileOutputStream = new FileOutputStream(bitmapFile);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,
+                                    Selimg.IMAGE_QUALITY,
+                                    fileOutputStream);
+                    fileOutputStream.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
